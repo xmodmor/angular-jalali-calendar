@@ -58,3 +58,5 @@ docs/
 GENERATED/
 generated/
 Generated/
+
+.angular
