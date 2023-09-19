@@ -1,0 +1,30 @@
+<div dir="rtl" class="bg-gray-100 min-h-screen">
+  <div class="container mx-auto py-8">
+    <!-- Narrow constrained content -->
+    <div class="max-w-xl mx-auto bg-white p-4 shadow-md rounded-lg">
+      <div class="jalali-calendar">
+        <h1 class="text-2xl font-semibold mb-4">تقویم پارسی</h1>
+        <div class="flex">
+          <div class="flex-none w-14 h-14">
+            <button (click)="previousMonth()">ماه قبل</button>
+          </div>
+          <div class="grow h-14">
+            <h2 class="text-center">{{ currentDate.format('jMMMM') | jalaliMonth }} {{ currentDate.format('jYYYY') | jalaliNum}}</h2>
+          </div>
+          <div class="flex-none w-14 h-14">
+            <button (click)="nextMonth()">ماه بعدی</button>
+          </div>
+        </div>
+        <div class="grid grid-cols-7">
+          <span *ngFor="let day of dayNames" class="text-center mb-4">{{ day }}</span>
+          <ng-container *ngFor="let week of calendarDays">
+            <div *ngFor="let day of week" class="text-center border border-gray-300 py-2" (click)="selectDate(day)"
+              [ngClass]="{ 'text-blue-600': isCurrentDate(day) }">
+              {{ day.format('jD') | jalaliNum }}
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
