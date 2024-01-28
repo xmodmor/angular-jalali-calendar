@@ -3,26 +3,47 @@
     <!-- Narrow constrained content -->
     <div class="max-w-xl mx-auto bg-white p-4 shadow-md rounded-lg">
       <div class="jalali-calendar">
-        <h1 class="text-2xl font-semibold mb-4">تقویم پارسی</h1>
+        <h1 class="text-2xl font-semibold mb-8">تقویم پارسی</h1>
         <div class="flex">
-          <div class="flex-none w-14 h-14">
-            <button (click)="previousMonth()">ماه قبل</button>
+          <div class="flex-none w-18 h-14">
+            <button mat-button color="primary" (click)="previousMonth()">ماه قبل</button>
           </div>
-          <div class="grow h-14">
-            <h2 class="text-center">{{ currentDate.format('jMMMM') | jalaliMonth }} {{ currentDate.format('jYYYY') | jalaliNum}}</h2>
+          <div class="grow text-center h-14">
+            <button mat-button [matMenuTriggerFor]="monthMenu">
+              <span>{{ currentDate.format('jMMMM') | jalaliMonth }}</span>
+              <mat-icon aria-hidden="false" aria-label="Drop Down" fontIcon="expand_more"></mat-icon>
+            </button>
+            <mat-menu #monthMenu="matMenu">
+              <button *ngFor="let month of monthOptions; index as i" mat-menu-item [value]="i+1"  (click)="changeMonth(i+1)">{{i+1+'. '}}{{ month | jalaliMonth}}</button>
+            </mat-menu>
+            <button mat-button [matMenuTriggerFor]="yearsMenu">
+              <span>{{ currentDate.format('jYYYY') | jalaliNum}}</span>
+              <mat-icon aria-hidden="false" aria-label="Drop Down" fontIcon="expand_more"></mat-icon>
+            </button>
+            <mat-menu #yearsMenu="matMenu">
+              <button mat-menu-item>Item 1</button>
+              <button mat-menu-item>Item 2</button>
+            </mat-menu>
           </div>
-          <div class="flex-none w-14 h-14">
-            <button (click)="nextMonth()">ماه بعدی</button>
+          <div class="flex-none w-18 h-14">
+            <button mat-button color="primary" (click)="nextMonth()">ماه بعدی</button>
           </div>
         </div>
         <div class="grid grid-cols-7">
-          <span *ngFor="let day of dayNames" class="text-center mb-4">{{ day }}</span>
+          <span *ngFor="let day of dayNames; index as i" class="text-md text-center text-gray-900 mb-4" [ngClass]="{'text-rose-900': isFriday(i)}">{{ day }}</span>
           <ng-container *ngFor="let week of calendarDays">
-            <div *ngFor="let day of week" class="text-center border border-gray-300 py-2" (click)="selectDate(day)"
-              [ngClass]="{ 'text-blue-600': isCurrentDate(day) }">
+            <div *ngFor="let day of week; index as i" class="text-center p-4" (click)="selectDate(day)"
+              [ngClass]="{ 'text-rose-800': isFriday(i)}">
+              <span *ngIf="isCurrentDate(day)" class="absolute flex h-3 w-3">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+                <span class="absolute inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
+              </span>
               {{ day.format('jD') | jalaliNum }}
             </div>
           </ng-container>
+        </div>
+        <div class="flex m-4">
+          <button mat-button class="justify-items-center" color="primary" (click)="goToToday()">برو به امروز</button>
         </div>
       </div>
     </div>

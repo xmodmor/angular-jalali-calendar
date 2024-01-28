@@ -1,27 +1,69 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit } from '@angular/core';
+import * as moment from 'moment';
+import 'moment-jalaali';
 import * as jalaliMoment from 'jalali-moment';
 import { days, daysAbbr } from 'app/days';
+
 
 @Component({
   selector: 'app-jalali-calendar',
   templateUrl: './jalali-calendar.component.html',
   styleUrls: ['./jalali-calendar.component.scss'],
 })
-export class JalaliCalendarComponent {
+export class JalaliCalendarComponent implements OnInit{
   @Output() dateSelected = new EventEmitter<string>();
 
   currentDate: jalaliMoment.Moment;
   calendarDays: jalaliMoment.Moment[][] = [];
   dayNames= days;
+  selectedYear: number;
+  selectedMonth: number;
 
+  monthOptions = [
+    'Farvardin','Ordibehesht','Khordaad','Tir','Mordaad','Shahrivar','Mehr','Aabaan','Aazar','Dey','Bahman','Esfand',
+  ];
   constructor() {
     this.currentDate = jalaliMoment(); // Initialize with the current date
     this.generateCalendar();
+
+    this.selectedYear = this.currentDate.jYear();
+    this.selectedMonth = this.currentDate.jMonth() + 1;
+  }
+
+  ngOnInit(): void {
+    
   }
 
   isCurrentDate(date: jalaliMoment.Moment): boolean {
     return date.isSame(jalaliMoment(), 'day');
   }
+
+  isFriday(day: any): boolean {
+    return day === 6;
+  }
+
+  goToToday() {
+    this.currentDate = jalaliMoment(); // Set currentDate to the current date
+    this.generateCalendar(); // Regenerate the calendar
+  }
+
+ changeMonth(month: any) {
+  console.log(month);
+  console.log(this.selectedYear);
+  
+  if (this.selectedYear >= 1300 && this.selectedYear <= 1500) {
+    this.currentDate = jalaliMoment({ year: this.selectedYear , month: month - 1 });
+    this.generateCalendar();
+  } else {
+    this.handleInvalidYearInput();
+  }
+}
+
+handleInvalidYearInput() {
+  // Handle invalid year input (outside the allowed range)
+  // You can display an error message or take other actions as needed.
+}
+
 
   generateCalendar() {
     const firstDayOfMonth = jalaliMoment(this.currentDate).startOf('jMonth');

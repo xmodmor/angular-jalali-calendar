@@ -7,6 +7,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JalaliMonthPipe } from 'pipes/jalali-month.pipe'; // Import the JalaliMonthPipe
 import { JalaliNumPipe } from 'pipes/jalali-num.pipe'; // Import the JalaliNumPipe
 
+// Angular Material Modules
+import {MatButtonModule} from '@angular/material/button';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatIconModule} from '@angular/material/icon';
+
 @NgModule({
   declarations: [
     JalaliCalendarComponent,
@@ -16,7 +21,11 @@ import { JalaliNumPipe } from 'pipes/jalali-num.pipe'; // Import the JalaliNumPi
   imports: [
     BrowserModule,
     JalaliCalendarRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    // Angular Material Modules
+    MatButtonModule,
+    MatMenuModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [JalaliCalendarComponent]
